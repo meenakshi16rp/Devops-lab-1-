@@ -11,6 +11,16 @@ def index():
     return jsonify(message="Hello from Meenakshi DevOps Lab", version=VERSION)
 
 
+@app.route("/info")
+def info():
+    return jsonify(
+        app="ensp461-lab1-sample-app",
+        author="Meenakshi",
+        version=VERSION,
+        pipeline="Jenkins declarative CI/CD",
+    )
+
+
 @app.route("/health")
 def health():
     return jsonify(status="UP"), 200
