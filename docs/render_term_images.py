@@ -96,7 +96,7 @@ render("render-polling-log.png", "meenakshi@ubuntu: ~/git-polling-log",
 # git installation & verification output (real command output from Ubuntu)
 render("render-git-verify.png", "meenakshi@ubuntu: ~",
        'meenakshi@ubuntu:~$ lsb_release -d\n'
-       'Description:\tUbuntu 24.04.3 LTS\n'
+       'Description:   Ubuntu 24.04.3 LTS\n'
        'meenakshi@ubuntu:~$ git --version\n'
        'git version 2.43.0\n'
        'meenakshi@ubuntu:~$ git config --global --list\n'
