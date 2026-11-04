@@ -12,7 +12,7 @@ rsync -a --exclude ".git" --exclude "__pycache__" --exclude ".pytest_cache" --ex
 pkill -f "python3 app.py" 2>/dev/null || true
 
 cd "$APP_DIR/app"
-nohup "$PYTHON" app.py > "$APP_DIR/deploy.log" 2>&1 &
+JENKINS_NODE_COOKIE=dontKillMe nohup "$PYTHON" app.py > "$APP_DIR/deploy.log" 2>&1 &
 
 # verify the health endpoint (up to 10 attempts)
 for i in $(seq 1 10); do
