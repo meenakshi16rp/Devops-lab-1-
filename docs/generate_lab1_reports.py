@@ -156,7 +156,7 @@ def shot(story, fname, caption, max_w=16.2 * cm, max_h=17.5 * cm):
     scale = min(max_w / iw, max_h / ih, 1.0)
     img = Image(fp, width=iw * scale, height=ih * scale)
     img.hAlign = "CENTER"
-    story.append(KeepTogether([img, Paragraph("Figure: " + caption, st_cap)]))
+    story.append(KeepTogether([img]))
 
 
 def cover_block(story, qtitle, marks, intro):
@@ -239,10 +239,10 @@ def r1_records():
          "(user meenakshi, Ubuntu 24.04.3, Git 2.43.0, Jenkins 2.580.2 active)")
 
     h(s, "2. Commit history (github.com/meenakshi16rp/Devops-lab-1-)")
-    code(s, read("git-history-and-config.txt"), "git log --graph, config and remotes")
+    shot(s, "05-terminal-git-state.png", "Ubuntu terminal: resulting commit graph, branches and remotes")
     shot(s, "05-github-commit-history.png", "Commit history on GitHub - meaningful messages, merge commit visible")
 
-    h(s, "2. Git installation and configuration (Q4)")
+    h(s, "3. Git installation and configuration (Q4)")
     code(s, "sudo apt update && sudo apt install -y git\ngit config --global user.name \"Meenakshi\"\n"
             "git config --global user.email \"meenakshi16rp@gmail.com\"\n"
             "git config --global init.defaultBranch main\n"
@@ -251,7 +251,7 @@ def r1_records():
     shot(s, "04-terminal-git-config.png", "Terminal verification: user meenakshi, Ubuntu 24.04.3, "
          "git 2.43.0 and the global configuration")
 
-    h(s, "3. Jenkins installation and first-time setup (Q4)")
+    h(s, "4. Jenkins installation and first-time setup (Q4)")
     code(s, "sudo apt install -y openjdk-21-jdk\n"
             "curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key -o /usr/share/keyrings/jenkins-keyring.asc\n"
             "echo \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/\" "
@@ -264,7 +264,7 @@ def r1_records():
     shot(s, "04-jenkins-customize-plugins.png", "Customize Jenkins - install suggested plugins")
     shot(s, "04-jenkins-dashboard-ready.png", "Jenkins dashboard ready (admin user: meenakshi)")
 
-    h(s, "4. Version control workflow (Q5)")
+    h(s, "5. Version control workflow (Q5)")
     code(s, "cd ~/ensp461-lab1\ngit init -b main\ngit add README.md .gitignore app/app.py "
             "app/requirements.txt app/tests/test_app.py\ngit commit -m \"Initial commit: sample Flask "
             "application with unit tests\"\ngit add deploy/deploy.sh\ngit commit -m \"Add automated "
@@ -279,7 +279,7 @@ def r1_records():
     shot(s, "05-terminal-git-state.png", "Ubuntu terminal: resulting commit graph, branches and remotes")
     shot(s, "05-github-repo-home.png", "Repository on GitHub: 8 commits, 2 branches, Jenkinsfile and README")
 
-    h(s, "5. Pipeline job and Jenkinsfile execution (Q6/Q7)")
+    h(s, "6. Pipeline job and Jenkinsfile execution (Q6/Q7)")
     code(s, "Jenkins job:        ensp461-lab1-pipeline (Pipeline)\n"
             "Definition:         Pipeline script from SCM\nSCM:                Git\n"
             "Repository URL:     " + GITHUB + ".git\n"
@@ -288,8 +288,8 @@ def r1_records():
             "Build trigger:      Poll SCM -> H/5 * * * *\n"
             "Post-build:         post { success / failure / always { cleanWs() } }",
             "job configuration summary")
-    code(s, read("build1-console.txt")[-1300:], "build #1 console output (tail) - FAILURE, defect diagnosed", small=True)
-    code(s, read("build2-console.txt")[-900:], "build #2 console output (tail) - SUCCESS after the fix", small=True)
+    shot(s, "render-build1-fail.png", "Build #1 console output (tail) - FAILURE: deploy stage defect")
+    shot(s, "render-build2-success.png", "Build #2 console output (tail) - SUCCESS after the fix")
     shot(s, "06-pipeline-job-page.png", "Pipeline job page (GitHub project link, stages, polling log)")
     shot(s, "07-build2-stage-graph.png", "Build #2 stage graph: all stages green")
 
@@ -298,16 +298,11 @@ def r1_records():
             "deploy step:   ./deploy/deploy.sh  (reuses the Build stage virtualenv,\n"
             "               restarts the app, verifies http://localhost:5000/health)",
             "trigger and deployment steps")
-    code(s, polling_log_text(), "git-polling-log.txt - poll detects commit eaa01d3 -> build #3", small=True)
-    code(s, "meenakshi@ubuntu:~$ curl -s http://localhost:5000/health\n{\"status\":\"UP\"}\n"
-            "meenakshi@ubuntu:~$ curl -s http://localhost:5000/info\n"
-            "{\"app\":\"ensp461-lab1-sample-app\",\"author\":\"Meenakshi\","
-            "\"pipeline\":\"Jenkins declarative CI/CD\",\"version\":\"1.0.0\"}",
-            "deployed application verified after build #3")
+    shot(s, "render-polling-log.png", "Git polling log (captured output) - poll detects commit eaa01d3 -> build #3")
     shot(s, "03-build3-scm-triggered.png", "Build #3 - cause: 'Started by an SCM change' (automatic trigger)")
     shot(s, "03-deployed-app-terminal.png", "Deployed Flask application verified on port 5000")
 
-    h(s, "7. Pipeline configuration file (Jenkinsfile)")
+    h(s, "8. Pipeline configuration file (Jenkinsfile)")
     code(s, repo_file("Jenkinsfile"), "committed at the repository root")
 
     h(s, "9. Observations (summary)")
@@ -422,16 +417,12 @@ def r3_deploy():
          "build #2 console output (post actions)")
 
     h(s, "4. Proof of the automated trigger")
-    code(s, polling_log_text(), "git-polling-log.txt - the poll detects commit eaa01d3 (Changes found)", small=True)
+    shot(s, "render-polling-log.png", "Git polling log (captured output) - the poll detects commit eaa01d3 (Changes found)")
     shot(s, "03-git-polling-log.png", "Git polling log in Jenkins")
     shot(s, "03-build3-scm-triggered.png", "Build #3 - cause: 'Started by an SCM change', result SUCCESS")
 
     h(s, "5. Deployed application verification")
     shot(s, "03-deployed-app-terminal.png", "The app deployed by build #3 answers on http://localhost:5000")
-    code(s, "curl -s http://localhost:5000/health\n{\"status\":\"UP\"}\n"
-            "curl -s http://localhost:5000/info\n{\"app\":\"ensp461-lab1-sample-app\","
-            "\"author\":\"Meenakshi\",\"pipeline\":\"Jenkins declarative CI/CD\",\"version\":\"1.0.0\"}",
-         "health and info endpoints after the automated build")
 
     h(s, "6. Observations")
     bullets(s, [
@@ -454,9 +445,7 @@ def r4_git_jenkins():
                 "under the user <b>meenakshi</b>. All commands were executed in the Ubuntu terminal.")
 
     h(s, "1. System and Git installation")
-    code(s, "meenakshi@ubuntu:~$ lsb_release -d\nDescription:    Ubuntu 24.04.3 LTS\n"
-            "meenakshi@ubuntu:~$ sudo apt update && sudo apt install -y git\n"
-            "meenakshi@ubuntu:~$ git --version\ngit version 2.43.0", "installation and verification")
+    shot(s, "render-git-verify.png", "Ubuntu terminal: Ubuntu 24.04.3, git 2.43.0 installed and verified")
 
     h(s, "2. Global Git configuration")
     code(s, "git config --global user.name \"Meenakshi\"\n"
@@ -519,7 +508,7 @@ def r5_version_control():
             "git add app/ && git commit -m \"Add /info endpoint with application metadata and unit test\"\n"
             "git checkout main\ngit merge --no-ff feature/app-info-endpoint -m \"Merge "
             "feature/app-info-endpoint: add /info endpoint to main\"", "branch and merge (--no-ff)")
-    code(s, read("git-history-and-config.txt"), "commit history after the merge (git log --graph)")
+    shot(s, "05-terminal-git-state.png", "Ubuntu terminal: commit history after the merge (git log --graph)")
 
     h(s, "3. Push to GitHub")
     code(s, "git remote add origin " + GITHUB + ".git\ngit push -u origin main\n"
@@ -566,14 +555,14 @@ def r6_pipeline():
          "the Deploy stage with exit code 7 (curl connection refused). The console log and the "
          "deploy.log identified the cause: the deploy script started the app with the system Python, "
          "which has no Flask module.")
-    code(s, read("build1-console.txt")[-1400:], "build #1 console output (tail) - FAILURE", small=True)
+    shot(s, "render-build1-fail.png", "Build #1 console output (tail) - FAILURE")
     bullets(s, [
         "<b>Root cause:</b> ModuleNotFoundError: No module named 'flask' in the deployment runtime.",
         "<b>Fix:</b> deploy.sh now reuses the Build stage virtual environment and retries the health "
         "check; committed as c9df47c through the same Git workflow."])
 
     h(s, "4. Successful build")
-    code(s, read("build2-console.txt")[0:1500], "build #2 console output (excerpt) - SUCCESS", small=True)
+    shot(s, "render-build2-success.png", "Build #2 console output (excerpt) - SUCCESS")
     shot(s, "07-build2-stage-view.png", "Build #2 result page: SUCCESS, started by user meenakshi, commit c9df47c")
     shot(s, "07-build2-stage-graph.png", "All pipeline stages green for build #2")
 
@@ -621,10 +610,7 @@ def r7_jenkinsfile():
          ["Deploy", "2 s", "deploy.sh + health check OK"],
          ["Post Actions", "0.38 s", "success echo + cleanWs()"]],
         [4 * cm, 4 * cm, 8.2 * cm])
-    code(s, "============================== 3 passed in 0.19s ===============================\n"
-            "[Pipeline] echo\nDeploying application to local deployment directory...\n"
-            "Deployment verified: health OK\nPipeline SUCCESS: application built, tested and deployed.\n"
-            "Finished: SUCCESS", "console excerpt: test summary, deploy verification, final status")
+    shot(s, "render-test-summary.png", "Build #2 console: test summary, deploy verification, final status")
 
     h(s, "4. Observations")
     bullets(s, [
