@@ -1,0 +1,27 @@
+=== git log --oneline --graph --all ===
+* eaa01d3 Keep deployed app running: set JENKINS_NODE_COOKIE to bypass process tree killer
+* c9df47c Fix deploy script: reuse pipeline virtualenv and add health-check retry loop
+* eedda81 Add declarative Jenkinsfile with build, test and deploy stages
+*   b4ead4e Merge feature/app-info-endpoint: add /info endpoint to main
+|\  
+| * 946c34c Add /info endpoint with application metadata and unit test
+|/  
+* 44c816b Add automated deployment script with health verification
+* 6b3bf69 Initial commit: sample Flask application with unit tests
+
+=== git config --global --list ===
+user.name=Meenakshi
+user.email=meenakshi16rp@gmail.com
+init.defaultbranch=main
+core.editor=nano
+credential.helper=store
+
+=== git remote -v ===
+origin	https://github.com/meenakshi16rp/Devops-lab-1-.git (fetch)
+origin	https://github.com/meenakshi16rp/Devops-lab-1-.git (push)
+
+=== git branch -a ===
+  feature/app-info-endpoint
+* main
+  remotes/origin/feature/app-info-endpoint
+  remotes/origin/main

@@ -1,0 +1,115 @@
+Started by user meenakshi
+Obtained Jenkinsfile from git https://github.com/meenakshi16rp/Devops-lab-1-.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/ensp461-lab1-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-creds
+Cloning the remote Git repository
+Cloning repository https://github.com/meenakshi16rp/Devops-lab-1-.git
+ > git init /var/lib/jenkins/workspace/ensp461-lab1-pipeline # timeout=10
+Fetching upstream changes from https://github.com/meenakshi16rp/Devops-lab-1-.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials GitHub PAT for Meenakshi (ENSP461 Lab 1)
+ > git fetch --tags --force --progress -- https://github.com/meenakshi16rp/Devops-lab-1-.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/meenakshi16rp/Devops-lab-1-.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision eedda81de61a0d342439103a2e967508adde89ae (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f eedda81de61a0d342439103a2e967508adde89ae # timeout=10
+Commit message: "Add declarative Jenkinsfile with build, test and deploy stages"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+Pulling source code from GitHub repository...
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential github-creds
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/ensp461-lab1-pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/meenakshi16rp/Devops-lab-1-.git # timeout=10
+Fetching upstream changes from https://github.com/meenakshi16rp/Devops-lab-1-.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials GitHub PAT for Meenakshi (ENSP461 Lab 1)
+ > git fetch --tags --force --progress -- https://github.com/meenakshi16rp/Devops-lab-1-.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision eedda81de61a0d342439103a2e967508adde89ae (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f eedda81de61a0d342439103a2e967508adde89ae # timeout=10
+Commit message: "Add declarative Jenkinsfile with build, test and deploy stages"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+Building application: creating virtual environment and installing dependencies...
+[Pipeline] sh
++ python3 -m venv /var/lib/jenkins/workspace/ensp461-lab1-pipeline/.venv
++ /var/lib/jenkins/workspace/ensp461-lab1-pipeline/.venv/bin/pip install --quiet -r app/requirements.txt
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] echo
+Running unit tests with pytest...
+[Pipeline] sh
++ /var/lib/jenkins/workspace/ensp461-lab1-pipeline/.venv/bin/python -m pytest app/tests -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.4, pluggy-1.7.0 -- /var/lib/jenkins/workspace/ensp461-lab1-pipeline/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /var/lib/jenkins/workspace/ensp461-lab1-pipeline
+collecting ... collected 3 items
+
+app/tests/test_app.py::test_index PASSED                                 [ 33%]
+app/tests/test_app.py::test_health PASSED                                [ 66%]
+app/tests/test_app.py::test_info PASSED                                  [100%]
+
+============================== 3 passed in 0.19s ===============================
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] echo
+Deploying application to local deployment directory...
+[Pipeline] sh
++ ./deploy/deploy.sh
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Cleaning workspace temporary files...
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] echo
+Pipeline FAILED - check the stage logs.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 7
+Finished: FAILURE

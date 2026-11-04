@@ -1,0 +1,10 @@
+=== git --version ===
+git version 2.43.0
+=== java -version ===
+openjdk version "21.0.12.1" 2026-08-18
+=== jenkins --version ===
+2.580.2
+=== Ubuntu ===
+Description:	Ubuntu 24.04.3 LTS
+=== whoami ===
+meenakshi
