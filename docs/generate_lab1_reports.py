@@ -57,9 +57,9 @@ st_code = ParagraphStyle("code", fontName="Mono", fontSize=7.6, leading=10,
 st_code_small = ParagraphStyle("codes", fontName="Mono", fontSize=6.4, leading=8.6,
                                textColor=colors.HexColor("#111111"))
 st_code_label = ParagraphStyle("codel", fontName="MonoB", fontSize=8, leading=11,
-                               textColor=colors.HexColor("#003366"), spaceBefore=6, spaceAfter=2)
+                               textColor=colors.black, spaceBefore=6, spaceAfter=2)
 st_cap = ParagraphStyle("cap", fontName="Sans", fontSize=8.5, leading=11, alignment=TA_LEFT,
-                        textColor=colors.HexColor("#555555"), spaceBefore=2, spaceAfter=8)
+                        textColor=colors.black, spaceBefore=2, spaceAfter=8)
 st_tbl = ParagraphStyle("tbl", fontName="Sans", fontSize=8.5, leading=11)
 
 
@@ -100,15 +100,14 @@ class Doc(BaseDocTemplate):
 
     def deco(self, canv, doc):
         canv.saveState()
-        canv.setFont("SansB", 8.5)
-        canv.setFillColor(colors.HexColor("#003366"))
-        canv.drawString(2 * cm, A4[1] - 1.35 * cm, TITLE)
-        canv.setFont("Sans", 8.5)
-        canv.setFillColor(colors.HexColor("#444444"))
-        canv.drawString(2 * cm, A4[1] - 1.75 * cm, HDR)
-        canv.setStrokeColor(colors.HexColor("#003366"))
-        canv.setLineWidth(0.8)
-        canv.line(2 * cm, A4[1] - 1.95 * cm, A4[0] - 2 * cm, A4[1] - 1.95 * cm)
+        canv.setFont("SansB", 10.5)
+        canv.setFillColor(colors.black)
+        canv.drawString(2 * cm, A4[1] - 1.4 * cm, TITLE)
+        canv.setFont("Sans", 9.5)
+        canv.drawString(2 * cm, A4[1] - 1.85 * cm, HDR)
+        canv.setStrokeColor(colors.black)
+        canv.setLineWidth(0.7)
+        canv.line(2 * cm, A4[1] - 2.05 * cm, A4[0] - 2 * cm, A4[1] - 2.05 * cm)
         canv.setFont("Sans", 8)
         canv.drawCentredString(A4[0] / 2, 1.1 * cm, "Page %d" % doc.page)
         canv.restoreState()
@@ -161,20 +160,11 @@ def shot(story, fname, caption, max_w=16.2 * cm, max_h=17.5 * cm):
 
 
 def cover_block(story, qtitle, marks, intro):
-    t = Table([[Paragraph("<b>%s</b>" % qtitle, ParagraphStyle(
-        "q", fontName="Sans", fontSize=11, leading=15))],
-        [Paragraph("Marks: %s | Course outcome: CO1 | Environment: Ubuntu 24.04 LTS (WSL2), "
-                   "Git 2.43.0, Jenkins 2.580.2 LTS" % marks, st_tbl)]],
-        colWidths=[16.2 * cm])
-    t.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#EEF3FA")),
-        ("BOX", (0, 0), (-1, -1), 0.8, colors.HexColor("#003366")),
-        ("LEFTPADDING", (0, 0), (-1, -1), 8), ("RIGHTPADDING", (0, 0), (-1, -1), 8),
-        ("TOPPADDING", (0, 0), (-1, -1), 6), ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))
-    story.append(t)
+    story.append(Paragraph(qtitle, ParagraphStyle(
+        "qt", fontName="SansB", fontSize=14, leading=18, spaceAfter=8)))
+    p(story, "Executed on Ubuntu 24.04 LTS (WSL2) by Meenakshi Rakesh. Repository: "
+             "<b>%s</b>" % GITHUB)
     story.append(Spacer(1, 8))
-    p(story, intro)
-    story.append(Spacer(1, 4))
 
 
 def tbl(story, header, rows, widths):
@@ -182,9 +172,9 @@ def tbl(story, header, rows, widths):
            [[Paragraph(str(c), st_tbl) for c in r] for r in rows]
     t = Table(data, colWidths=widths, repeatRows=1)
     t.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#003366")),
-        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
-        ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#99AABB")),
+        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#D9D9D9")),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+        ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#999999")),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F2F6FB")]),
         ("LEFTPADDING", (0, 0), (-1, -1), 5), ("RIGHTPADDING", (0, 0), (-1, -1), 5),
         ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 3)]))
@@ -209,9 +199,9 @@ def arch_diagram(story):
         d.add(Rect(x, y0, bw, bh, fillColor=colors.HexColor(col),
                    strokeColor=colors.HexColor("#335577"), strokeWidth=0.8))
         d.add(String(x + bw / 2, y0 + bh - 14, l1, fontName="SansB", fontSize=6.5,
-                     textAnchor="middle", fillColor=colors.HexColor("#112233")))
+                     textAnchor="middle", fillColor=colors.black))
         d.add(String(x + bw / 2, y0 + bh - 26, l2, fontName="Sans", fontSize=5.6,
-                     textAnchor="middle", fillColor=colors.HexColor("#334455")))
+                     textAnchor="middle", fillColor=colors.black))
         if i < len(boxes) - 1:
             ax = x + bw
             d.add(Line(ax + 2, y0 + bh / 2, ax + gap - 8, y0 + bh / 2,
@@ -222,10 +212,10 @@ def arch_diagram(story):
         x += bw + gap
     d.add(String(0.15 * cm, y0 - 0.65 * cm,
                  "Feedback loop: after a successful build the deployed app is verified with curl http://localhost:5000/health -> HTTP 200 {\"status\": \"UP\"}",
-                 fontName="Sans", fontSize=6.5, fillColor=colors.HexColor("#444444")))
+                 fontName="Sans", fontSize=6.5, fillColor=colors.black))
     d.add(String(0.15 * cm, y0 + bh + 0.45 * cm,
                  "Automation trigger: GitHub commit -> Jenkins SCM poll (every 5 min) -> pipeline run (no manual step)",
-                 fontName="Sans", fontSize=6.5, fillColor=colors.HexColor("#444444")))
+                 fontName="Sans", fontSize=6.5, fillColor=colors.black))
     story.append(d)
     story.append(Spacer(1, 6))
 
@@ -238,34 +228,43 @@ def r1_records():
             "Question 1 - Records of all experiments", 5)
     cover_block(s, "Question 1: Record all commands, pipeline configurations, screenshots, "
                 "commit history, and observations for each experiment.", 5,
-                "This document compiles the complete evidence of Lab 1 as executed by "
-                "Meenakshi Rakesh: every command run on Ubuntu 24.04 LTS (WSL2), the Jenkins "
-                "pipeline configuration, the Git commit history, screenshots of each step, and "
-                "the observations drawn from them. All artefacts are also maintained in the "
-                "GitHub repository <b>%s</b>." % GITHUB)
+                "This document compiles the evidence of every experiment in Lab 1 as executed by "
+                "Meenakshi Rakesh: the commands run on Ubuntu 24.04 LTS (WSL2), the pipeline "
+                "configuration, the Git commit history, screenshots of each step, and the "
+                "observations drawn from them. All artefacts are also maintained in the GitHub "
+                "repository <b>%s</b>." % GITHUB)
 
-    h(s, "1. Environment and tool verification (Q4)")
-    code(s, "meenakshi@ubuntu:~$ whoami\n"
-            "meenakshi\n"
-            "meenakshi@ubuntu:~$ lsb_release -d\n"
-            "Description:    Ubuntu 24.04.3 LTS\n"
-            "meenakshi@ubuntu:~$ git --version\ngit version 2.43.0\n"
-            "meenakshi@ubuntu:~$ java -version | head -1\n"
-            "openjdk version \"21.0.12.1\" 2026-08-18\n"
-            "meenakshi@ubuntu:~$ jenkins --version\n2.580.2\n"
-            "meenakshi@ubuntu:~$ systemctl is-active jenkins\nactive", "tool-versions.txt")
-    shot(s, "04-terminal-git-config.png", "Terminal verification: user meenakshi, Ubuntu 24.04.3, "
-         "git 2.43.0 and global Git configuration")
+    h(s, "1. Environment and service verification")
+    shot(s, "04-terminal-env-verify.png", "Ubuntu terminal: environment and Jenkins service verification "
+         "(user meenakshi, Ubuntu 24.04.3, Git 2.43.0, Jenkins 2.580.2 active)")
 
-    h(s, "2. Git installation and global configuration commands (Q4)")
+    h(s, "2. Commit history (github.com/meenakshi16rp/Devops-lab-1-)")
+    code(s, read("git-history-and-config.txt"), "git log --graph, config and remotes")
+    shot(s, "05-github-commit-history.png", "Commit history on GitHub - meaningful messages, merge commit visible")
+
+    h(s, "2. Git installation and configuration (Q4)")
     code(s, "sudo apt update && sudo apt install -y git\ngit config --global user.name \"Meenakshi\"\n"
             "git config --global user.email \"meenakshi16rp@gmail.com\"\n"
             "git config --global init.defaultBranch main\n"
-            "git config --global credential.helper store\n"
-            "git config --global --list", "executed in WSL Ubuntu 24.04")
-    code(s, read("git-history-and-config.txt"), "git-history-and-config.txt")
+            "git config --global credential.helper store\ngit config --global --list",
+         "installation and global configuration")
+    shot(s, "04-terminal-git-config.png", "Terminal verification: user meenakshi, Ubuntu 24.04.3, "
+         "git 2.43.0 and the global configuration")
 
-    h(s, "3. Repository commands - init, stage, commit, branch, merge, push (Q5)")
+    h(s, "3. Jenkins installation and first-time setup (Q4)")
+    code(s, "sudo apt install -y openjdk-21-jdk\n"
+            "curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key -o /usr/share/keyrings/jenkins-keyring.asc\n"
+            "echo \"deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/\" "
+            "| sudo tee /etc/apt/sources.list.d/jenkins.list\n"
+            "sudo apt update && sudo apt install -y jenkins\n"
+            "sudo systemctl enable --now jenkins\n"
+            "sudo systemctl is-active jenkins\nactive\njenkins --version\n2.580.2",
+         "Jenkins LTS installation (systemd service on port 8080)", small=True)
+    shot(s, "04-jenkins-unlock-page.png", "Unlock Jenkins with the initial admin password")
+    shot(s, "04-jenkins-customize-plugins.png", "Customize Jenkins - install suggested plugins")
+    shot(s, "04-jenkins-dashboard-ready.png", "Jenkins dashboard ready (admin user: meenakshi)")
+
+    h(s, "4. Version control workflow (Q5)")
     code(s, "cd ~/ensp461-lab1\ngit init -b main\ngit add README.md .gitignore app/app.py "
             "app/requirements.txt app/tests/test_app.py\ngit commit -m \"Initial commit: sample Flask "
             "application with unit tests\"\ngit add deploy/deploy.sh\ngit commit -m \"Add automated "
@@ -276,11 +275,11 @@ def r1_records():
             "feature/app-info-endpoint: add /info endpoint to main\"\ngit add Jenkinsfile\ngit commit -m "
             "\"Add declarative Jenkinsfile with build, test and deploy stages\"\ngit remote add origin "
             + GITHUB + ".git\ngit push -u origin main\ngit push -u origin feature/app-info-endpoint",
-            "commands executed under user meenakshi")
-    code(s, read("git-history-and-config.txt"), "resulting commit history (git log --graph)")
+            "init, stage, commit, branch, merge, push")
+    shot(s, "05-terminal-git-state.png", "Ubuntu terminal: resulting commit graph, branches and remotes")
+    shot(s, "05-github-repo-home.png", "Repository on GitHub: 8 commits, 2 branches, Jenkinsfile and README")
 
-    h(s, "4. Jenkins pipeline configuration (Q6, Q7, Q3)")
-    code(s, repo_file("Jenkinsfile"), "Jenkinsfile (committed to the repository)")
+    h(s, "5. Pipeline job and Jenkinsfile execution (Q6/Q7)")
     code(s, "Jenkins job:        ensp461-lab1-pipeline (Pipeline)\n"
             "Definition:         Pipeline script from SCM\nSCM:                Git\n"
             "Repository URL:     " + GITHUB + ".git\n"
@@ -289,42 +288,41 @@ def r1_records():
             "Build trigger:      Poll SCM -> H/5 * * * *\n"
             "Post-build:         post { success / failure / always { cleanWs() } }",
             "job configuration summary")
+    code(s, read("build1-console.txt")[-1300:], "build #1 console output (tail) - FAILURE, defect diagnosed", small=True)
+    code(s, read("build2-console.txt")[-900:], "build #2 console output (tail) - SUCCESS after the fix", small=True)
+    shot(s, "06-pipeline-job-page.png", "Pipeline job page (GitHub project link, stages, polling log)")
+    shot(s, "07-build2-stage-graph.png", "Build #2 stage graph: all stages green")
 
-    h(s, "5. Build executions and console records (Q6, Q7, Q3)")
-    code(s, read("build1-console.txt")[0:1500], "build #1 console output (excerpt) - FAILURE", small=True)
-    code(s, read("build2-console.txt")[0:1500], "build #2 console output (excerpt) - SUCCESS", small=True)
+    h(s, "6. Automated deployment (Q3)")
+    code(s, "Build trigger: Poll SCM - H/5 * * * *  (every 5 minutes)\n"
+            "deploy step:   ./deploy/deploy.sh  (reuses the Build stage virtualenv,\n"
+            "               restarts the app, verifies http://localhost:5000/health)",
+            "trigger and deployment steps")
     code(s, polling_log_text(), "git-polling-log.txt - poll detects commit eaa01d3 -> build #3", small=True)
-
-    h(s, "6. Deployment verification commands (Q3)")
-    code(s, "meenakshi@ubuntu:~$ curl -s http://localhost:5000/health\n"
-            "{\"status\":\"UP\"}\n"
+    code(s, "meenakshi@ubuntu:~$ curl -s http://localhost:5000/health\n{\"status\":\"UP\"}\n"
             "meenakshi@ubuntu:~$ curl -s http://localhost:5000/info\n"
             "{\"app\":\"ensp461-lab1-sample-app\",\"author\":\"Meenakshi\","
             "\"pipeline\":\"Jenkins declarative CI/CD\",\"version\":\"1.0.0\"}",
             "deployed application verified after build #3")
+    shot(s, "03-build3-scm-triggered.png", "Build #3 - cause: 'Started by an SCM change' (automatic trigger)")
+    shot(s, "03-deployed-app-terminal.png", "Deployed Flask application verified on port 5000")
 
-    h(s, "7. Observations")
+    h(s, "7. Pipeline configuration file (Jenkinsfile)")
+    code(s, repo_file("Jenkinsfile"), "committed at the repository root")
+
+    h(s, "9. Observations (summary)")
     bullets(s, [
         "Build #1 failed in the Deploy stage (curl exit code 7): the deployment script invoked the "
-        "system python3, which does not have Flask installed. Diagnosis from the console log and the "
-        "deploy.log showed <b>ModuleNotFoundError: No module named 'flask'</b>.",
-        "Fix: deploy.sh was changed to reuse the virtual environment created in the Build stage "
-        "(<b>VENV</b> environment variable) and a health-check retry loop (10 attempts) was added. "
-        "Committed as c9df47c; build #2 then succeeded end to end.",
-        "The deployed server was killed when the build finished because Jenkins' process-tree killer "
-        "reaps child processes. Setting <b>JENKINS_NODE_COOKIE=dontKillMe</b> before nohup keeps the "
-        "application running after the build (commit eaa01d3).",
-        "Build #3 was triggered automatically by the Poll SCM schedule - its cause reads "
-        "<b>Started by an SCM change</b> - proving the automation works without manual intervention.",
-        "Meaningful commit messages were used for every change so the history itself documents the "
-        "work; the pipeline is fully reproducible from the repository (Jenkinsfile + deploy script)."])
-
-    PageBreak()
-    h(s, "8. Key screenshots (also embedded in the per-question reports)")
-    shot(s, "04-jenkins-dashboard-ready.png", "Jenkins 2.580.2 dashboard after setup, admin user meenakshi")
-    shot(s, "07-build2-stage-graph.png", "Build #2 stage graph: Checkout SCM, Checkout, Build, Test, Deploy, Post Actions - all green")
-    shot(s, "03-build3-scm-triggered.png", "Build #3 automatically started by an SCM change (poll trigger)")
-    shot(s, "03-deployed-app-terminal.png", "Deployed Flask application verified on port 5000 with author Meenakshi")
+        "system python3, which does not have Flask installed - diagnosed from the console log "
+        "(<b>ModuleNotFoundError: No module named 'flask'</b>).",
+        "Fix: deploy.sh now reuses the virtual environment created in the Build stage (<b>VENV</b>) "
+        "and retries the health check; committed as c9df47c, after which build #2 succeeded.",
+        "Jenkins' process-tree killer stopped the deployed app after the build ended; setting "
+        "<b>JENKINS_NODE_COOKIE=dontKillMe</b> keeps it running (commit eaa01d3).",
+        "Build #3 fired with cause <b>Started by an SCM change</b> - the Poll SCM trigger automates "
+        "the whole chain from git push to deployment without manual steps.",
+        "Meaningful commit messages keep the history self-documenting; the pipeline is reproducible "
+        "from the repository alone (Jenkinsfile + deploy script)."])
     d.build(s)
 
 
